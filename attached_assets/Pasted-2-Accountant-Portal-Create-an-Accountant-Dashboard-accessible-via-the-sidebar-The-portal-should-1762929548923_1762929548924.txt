@@ -1,0 +1,83 @@
+2️⃣ Accountant Portal
+
+Create an Accountant Dashboard accessible via the sidebar.
+
+The portal should allow switching between:
+
+Client List View: Sidebar displays a scrollable list of clients with quick info (name, balance, last invoice).
+
+Reports View: Main section shows analytics (bar charts, pie charts, and tables for income/expenses per client).
+
+Include a toggle switch or tabs to swap between “Clients” and “Reports”.
+
+Each client can be clicked to open a detailed financial summary (popup or nested page).
+
+The layout should be 2-column on desktop and stacked on mobile.
+
+📱 Responsiveness:
+
+All pages and modals should adapt seamlessly to screen sizes:
+
+Mobile: stacked layout, floating CTAs
+
+Tablet: two-column
+
+Desktop: grid dashboard layout
+
+Navigation sidebar should collapse into a top navbar or hamburger menu on small screens.
+
+Charts and tables should remain scrollable on smaller viewports.
+
+🧭 Additional UI Features:
+
+Sticky top navbar with app name and profile dropdown.
+
+Global search bar for invoices, clients, or reports.
+
+Use subtle animations (Framer Motion) when switching tabs or views.
+
+Include reusable Button, Card, Modal, and Form components for consistency.
+
+Make sure UI components use Tailwind utility classes for maintainability.
+
+🧩 Pages / Components to Include:
+
+DashboardPage.jsx — Overview of invoices, revenue, quick actions
+
+InvoiceFlow.jsx — 3-step invoice creation (with “Scan to Add Item”)
+
+AccountantPortal.jsx — Client List + Reports Toggle
+
+ClientCard.jsx — Displays client data
+
+ReportChart.jsx — Renders charts using Recharts
+
+Sidebar.jsx — Navigation (collapsible, role-based)
+
+Topbar.jsx — App title, user menu, search
+
+Button.jsx, Modal.jsx, FormField.jsx — Reusable UI components
+
+🧠 Tech Stack (Frontend Only):
+
+React + Vite
+
+Tailwind CSS
+
+React Router DOM
+
+Recharts (for visualizations)
+
+Framer Motion (for animations)
+
+Context API or Redux for global state management
+
+✅ Expected Output:
+
+Fully responsive React UI with clean color scheme and smooth transitions.
+
+“Mobile Quick Invoice Flow” and “Accountant Portal” working prototypes.
+
+Separate pages for dashboard, invoices, clients, and reports.
+
+Consistent, visually appealing button and card colors across app.

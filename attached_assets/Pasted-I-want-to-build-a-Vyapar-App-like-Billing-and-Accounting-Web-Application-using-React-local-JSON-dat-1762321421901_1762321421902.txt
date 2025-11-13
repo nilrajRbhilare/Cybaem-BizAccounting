@@ -1,0 +1,216 @@
+I want to build a Vyapar App–like Billing and Accounting Web Application using React, local JSON data, and no backend.
+
+The app should be responsive, modern, and designed for small businesses to manage invoices, inventory, expenses, and reports — similar to Vyapar or Zoho Books UI.
+
+Use React functional components, Hooks (useState, useEffect, useContext), and React Router for navigation. Store and fetch all data from local JSON files or browser storage (localStorage) to simulate backend operations.
+
+🧩 Tech Stack & Libraries
+
+React 18+
+
+React Router DOM (for navigation)
+
+Tailwind CSS or Bootstrap 5 (for responsive UI)
+
+Chart.js or Recharts (for analytics and dashboard graphs)
+
+React Icons / Lucide Icons
+
+Local JSON files or localStorage for data persistence
+
+Framer Motion (optional for smooth animations)
+
+🧱 Core Pages / Screens
+1️⃣ Login & Signup
+
+Simulate login with static JSON credentials.
+
+Store “loggedInUser” in localStorage.
+
+Simple email-password validation.
+
+Responsive 2-column layout (left: image, right: form).
+
+Option to switch between Login / Signup tabs.
+
+2️⃣ Company Setup Wizard
+
+Collect company info (Name, GST Number, Bank Details, Address, Logo).
+
+Multi-step form with “Next” and “Back” buttons.
+
+Progress bar at top to show setup progress.
+
+Store data in company.json or localStorage.
+
+3️⃣ Dashboard (Home)
+
+Display key metrics (cards):
+
+Total Sales
+
+Total Expenses
+
+Stock Value
+
+Cash Flow
+
+Include charts: Sales trend graph, Expense vs Income pie chart.
+
+Responsive grid layout using Tailwind or Bootstrap cards.
+
+4️⃣ Invoice Management
+
+Invoice List Page:
+
+Table view of all invoices with search, sort, and filter by date or status.
+
+“+ New Invoice” button to open form.
+
+Create Invoice Flow:
+
+Select Customer (dropdown from JSON data).
+
+Add Items (auto-suggest from Inventory JSON).
+
+Calculate subtotal, tax (GST), and total automatically.
+
+Option to download invoice as PDF (use jspdf or react-to-print).
+
+Update invoice status (Draft / Sent / Paid).
+
+5️⃣ Customer Directory
+
+List, search, and filter customers from customers.json.
+
+Form to add/edit customers with validation.
+
+Integrate with Invoice page (customer selection).
+
+6️⃣ Inventory Dashboard
+
+Show all products with stock quantity, unit price, and valuation.
+
+Option to filter by warehouse or category.
+
+Highlight low-stock items (stock < threshold).
+
+“Add Product” form with SKU, Unit, Category, Price, and Stock.
+
+7️⃣ Product Detail Page
+
+Display detailed view of a product: SKU, Description, Price, Stock Movement History.
+
+Edit/Delete buttons to update JSON data.
+
+8️⃣ Purchase Order Flow
+
+Create new Purchase Order to vendor.
+
+Add items with cost and quantity.
+
+When “Receive Stock” clicked → auto-update product stock in inventory JSON.
+
+9️⃣ Bank Reconciliation
+
+Two-column layout:
+
+Left: “Bank Transactions” (from bank.json)
+
+Right: “Book Entries” (from invoice.json and expenses.json)
+
+Simulate auto-matching based on amount/date.
+
+🔟 Reports Center
+
+List key reports:
+
+Profit & Loss
+
+Balance Sheet
+
+GST Summary
+
+Display data in table + chart form.
+
+Filter by date range (dropdown or calendar picker).
+
+11️⃣ Settings
+
+Tabs:
+
+Profile Settings
+
+User Roles (simulated using JSON role list)
+
+Company Preferences (currency, tax rate, invoice prefix)
+
+Theme Mode (Dark/Light toggle)
+
+Save all in localStorage.
+
+12️⃣ Notifications Center
+
+Bell icon in top navigation bar.
+
+Show alerts like:
+
+“Low Stock on Product A”
+
+“Invoice #123 overdue”
+
+Use dropdown notification popover.
+
+13️⃣ Mobile Quick Invoice Flow
+
+On mobile, show simplified “3-step invoice creation” (Customer → Items → Review).
+
+Floating “+ Invoice” button at bottom right.
+
+Responsive layout using flexbox and grid utilities.
+
+🔁 User Journey Flows
+
+A. Billing Flow
+
+Dashboard → “Create Invoice”
+
+Select Customer → Add Items (from Inventory JSON)
+
+Tax auto-calculated → Preview → Save
+
+Invoice status auto-updated → shows in Dashboard KPIs
+
+B. Inventory Flow
+
+Add Product → SKU, UOM, Stock = 0
+
+Create Purchase Order → Receive Stock
+
+Stock updates automatically
+
+Low-stock alert triggers Notification
+
+Selling product via Invoice → reduce stock count
+
+C. Reports Flow
+
+Fetch JSON data for invoices, purchases, and expenses
+
+Compute totals for sales, tax, profit, and stock value dynamically
+
+Display graphs and export options
+
+🎨 UI/UX Design Guidelines
+
+Clean, business-style UI similar to Vyapar / Zoho Books.
+
+Left sidebar navigation (Dashboard, Invoices, Inventory, Reports, Settings).
+
+Top bar for notifications, search, and profile menu.
+
+Use pastel color palette (white, blue, grey tones).
+
+Add hover and transition effects for buttons and cards.
+
+100% responsive (mobile-first approach).

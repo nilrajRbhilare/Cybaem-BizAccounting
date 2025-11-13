@@ -1,0 +1,131 @@
+Build a modern, responsive web application UI for a business invoicing and accounting system using React (with Tailwind CSS).
+
+The app should look professional, clean, and highly interactive, optimized for both desktop and mobile.
+
+Use consistent color themes for all buttons, navigation, and cards — make the colors intuitive (e.g., blue for primary actions, green for confirm, red for delete).
+Add smooth hover transitions, rounded corners, and soft shadows to make the interface feel dynamic and pleasant.
+
+🎨 Design Guidelines:
+
+Primary color palette: shades of blue and gray, with accent colors for CTA (e.g., teal, amber).
+
+Buttons:
+
+Primary: Blue background, white text, hover → darker blue
+
+Secondary: Gray outline, hover → light blue background
+
+Danger: Red background, white text
+
+Typography: Use modern sans-serif (like Inter or Poppins).
+
+Use grid layouts for dashboards and cards for content blocks.
+
+Add a sidebar for navigation (collapsible on mobile).
+
+Keep UI responsive — use media queries or Tailwind’s responsive classes.
+
+⚙️ Functional Requirements:
+1️⃣ Mobile Quick Invoice Flow
+
+Implement a 3-step mobile-friendly invoice creation flow:
+
+Step 1: Client Details (name, contact, select from existing or add new)
+
+Step 2: Add Items
+
+Include a “Scan to Add Item” feature (mocked for now with a button that triggers an upload or barcode input modal).
+
+Show a floating “+ Add Item” or “+ Invoice” CTA button on the bottom-right of mobile view.
+
+Step 3: Review & Confirm (summary of items, taxes, total amount, “Confirm Invoice” button)
+
+Each step should be a card-based layout with progress indicators at the top (e.g., Step 1 of 3).
+
+Mobile-first, one card per screen.
+
+Smooth transitions between steps.
+
+2️⃣ Accountant Portal
+
+Create an Accountant Dashboard accessible via the sidebar.
+
+The portal should allow switching between:
+
+Client List View: Sidebar displays a scrollable list of clients with quick info (name, balance, last invoice).
+
+Reports View: Main section shows analytics (bar charts, pie charts, and tables for income/expenses per client).
+
+Include a toggle switch or tabs to swap between “Clients” and “Reports”.
+
+Each client can be clicked to open a detailed financial summary (popup or nested page).
+
+The layout should be 2-column on desktop and stacked on mobile.
+
+📱 Responsiveness:
+
+All pages and modals should adapt seamlessly to screen sizes:
+
+Mobile: stacked layout, floating CTAs
+
+Tablet: two-column
+
+Desktop: grid dashboard layout
+
+Navigation sidebar should collapse into a top navbar or hamburger menu on small screens.
+
+Charts and tables should remain scrollable on smaller viewports.
+
+🧭 Additional UI Features:
+
+Sticky top navbar with app name and profile dropdown.
+
+Global search bar for invoices, clients, or reports.
+
+Use subtle animations (Framer Motion) when switching tabs or views.
+
+Include reusable Button, Card, Modal, and Form components for consistency.
+
+Make sure UI components use Tailwind utility classes for maintainability.
+
+🧩 Pages / Components to Include:
+
+DashboardPage.jsx — Overview of invoices, revenue, quick actions
+
+InvoiceFlow.jsx — 3-step invoice creation (with “Scan to Add Item”)
+
+AccountantPortal.jsx — Client List + Reports Toggle
+
+ClientCard.jsx — Displays client data
+
+ReportChart.jsx — Renders charts using Recharts
+
+Sidebar.jsx — Navigation (collapsible, role-based)
+
+Topbar.jsx — App title, user menu, search
+
+Button.jsx, Modal.jsx, FormField.jsx — Reusable UI components
+
+🧠 Tech Stack (Frontend Only):
+
+React + Vite
+
+Tailwind CSS
+
+React Router DOM
+
+Recharts (for visualizations)
+
+Framer Motion (for animations)
+
+Context API or Redux for global state management
+
+✅ Expected Output:
+
+Fully responsive React UI with clean color scheme and smooth transitions.
+
+“Mobile Quick Invoice Flow” and “Accountant Portal” working prototypes.
+
+Separate pages for dashboard, invoices, clients, and reports.
+
+Consistent, visually appealing button and card colors across app.
