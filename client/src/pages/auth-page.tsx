@@ -55,56 +55,62 @@ export default function AuthPage() {
 
   return (
     <div className="min-h-screen grid md:grid-cols-2">
-      <div className="hidden md:flex flex-col justify-center items-center bg-primary text-primary-foreground p-12">
-        <div className="max-w-md">
+      <div className="hidden md:flex flex-col justify-center items-center bg-gradient-to-br from-primary via-teal-500 to-cyan-600 text-primary-foreground p-12 relative overflow-hidden">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,rgba(255,255,255,0.1),transparent_50%)]"></div>
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_80%,rgba(255,255,255,0.08),transparent_60%)]"></div>
+        <div className="max-w-md relative z-10 animate-fadeInUp">
           <div className="flex flex-col items-center mb-8">
-            <img src={cybaemLogo} alt="Cybaem Tech" className="h-24 w-auto mb-4" />
+            <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-4 mb-4 shadow-2xl">
+              <img src={cybaemLogo} alt="Cybaem Tech" className="h-20 w-auto" />
+            </div>
           </div>
-          <h2 className="text-3xl font-bold mb-4">Manage Your Business with Ease</h2>
-          <p className="text-lg opacity-90 mb-6">
+          <h2 className="text-4xl font-bold mb-4 text-center">Manage Your Business with Ease</h2>
+          <p className="text-lg opacity-95 mb-8 text-center">
             Complete invoicing and accounting solution for modern businesses. Beyond Limits.
           </p>
-          <ul className="space-y-3 text-sm opacity-90">
-            <li className="flex items-start gap-2">
-              <span className="font-bold">✓</span>
-              <span>Professional invoice generation with GST calculation</span>
+          <ul className="space-y-4 text-sm">
+            <li className="flex items-start gap-3 bg-white/10 backdrop-blur-sm rounded-lg p-3 animate-fadeInUp stagger-delay-1">
+              <span className="font-bold text-lg">✓</span>
+              <span className="opacity-95">Professional invoice generation with GST calculation</span>
             </li>
-            <li className="flex items-start gap-2">
-              <span className="font-bold">✓</span>
-              <span>Real-time inventory tracking and low stock alerts</span>
+            <li className="flex items-start gap-3 bg-white/10 backdrop-blur-sm rounded-lg p-3 animate-fadeInUp stagger-delay-2">
+              <span className="font-bold text-lg">✓</span>
+              <span className="opacity-95">Real-time inventory tracking and low stock alerts</span>
             </li>
-            <li className="flex items-start gap-2">
-              <span className="font-bold">✓</span>
-              <span>Comprehensive financial reports and analytics</span>
+            <li className="flex items-start gap-3 bg-white/10 backdrop-blur-sm rounded-lg p-3 animate-fadeInUp stagger-delay-3">
+              <span className="font-bold text-lg">✓</span>
+              <span className="opacity-95">Comprehensive financial reports and analytics</span>
             </li>
           </ul>
         </div>
       </div>
       
-      <div className="flex items-center justify-center p-8">
-        <div className="w-full max-w-md">
+      <div className="flex items-center justify-center p-8 bg-gradient-to-br from-background via-muted/20 to-background">
+        <div className="w-full max-w-md animate-fadeInUp">
           <div className="md:hidden mb-8 text-center">
             <div className="flex flex-col items-center mb-4">
-              <img src={cybaemLogo} alt="Cybaem Tech" className="h-16 w-auto" />
+              <div className="bg-primary/10 rounded-2xl p-3 mb-2">
+                <img src={cybaemLogo} alt="Cybaem Tech" className="h-12 w-auto" />
+              </div>
             </div>
           </div>
           
           <Tabs defaultValue="login" className="w-full">
-            <TabsList className="grid w-full grid-cols-2">
-              <TabsTrigger value="login" data-testid="tab-login">Login</TabsTrigger>
-              <TabsTrigger value="signup" data-testid="tab-signup">Sign Up</TabsTrigger>
+            <TabsList className="grid w-full grid-cols-2 bg-muted/50">
+              <TabsTrigger value="login" data-testid="tab-login" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">Login</TabsTrigger>
+              <TabsTrigger value="signup" data-testid="tab-signup" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">Sign Up</TabsTrigger>
             </TabsList>
             
             <TabsContent value="login">
-              <Card>
+              <Card className="border-primary/20 shadow-lg">
                 <form onSubmit={handleLogin}>
-                  <CardHeader>
-                    <CardTitle>Login to your account</CardTitle>
+                  <CardHeader className="space-y-1">
+                    <CardTitle className="text-2xl">Login to your account</CardTitle>
                     <CardDescription>Enter your credentials to access your dashboard</CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <div className="space-y-2">
-                      <Label htmlFor="login-email">Email</Label>
+                      <Label htmlFor="login-email" className="text-sm font-medium">Email</Label>
                       <Input
                         id="login-email"
                         type="email"
@@ -113,10 +119,11 @@ export default function AuthPage() {
                         onChange={(e) => setLoginEmail(e.target.value)}
                         required
                         data-testid="input-login-email"
+                        className="h-11"
                       />
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="login-password">Password</Label>
+                      <Label htmlFor="login-password" className="text-sm font-medium">Password</Label>
                       <Input
                         id="login-password"
                         type="password"
@@ -125,14 +132,17 @@ export default function AuthPage() {
                         onChange={(e) => setLoginPassword(e.target.value)}
                         required
                         data-testid="input-login-password"
+                        className="h-11"
                       />
                     </div>
-                    <p className="text-xs text-muted-foreground">
-                      Demo credentials: demo@business.com / demo123
-                    </p>
+                    <div className="bg-primary/10 border border-primary/20 rounded-lg p-3">
+                      <p className="text-xs text-foreground font-medium">
+                        Demo credentials: demo@business.com / demo123
+                      </p>
+                    </div>
                   </CardContent>
                   <CardFooter>
-                    <Button type="submit" className="w-full" data-testid="button-login">
+                    <Button type="submit" className="w-full h-11 text-base font-semibold" data-testid="button-login">
                       Login
                     </Button>
                   </CardFooter>
@@ -141,15 +151,15 @@ export default function AuthPage() {
             </TabsContent>
             
             <TabsContent value="signup">
-              <Card>
+              <Card className="border-primary/20 shadow-lg">
                 <form onSubmit={handleSignup}>
-                  <CardHeader>
-                    <CardTitle>Create an account</CardTitle>
-                    <CardDescription>Get started with BizAccounting today</CardDescription>
+                  <CardHeader className="space-y-1">
+                    <CardTitle className="text-2xl">Create an account</CardTitle>
+                    <CardDescription>Get started with Cybaern Tech today</CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <div className="space-y-2">
-                      <Label htmlFor="signup-name">Full Name</Label>
+                      <Label htmlFor="signup-name" className="text-sm font-medium">Full Name</Label>
                       <Input
                         id="signup-name"
                         type="text"
@@ -158,10 +168,11 @@ export default function AuthPage() {
                         onChange={(e) => setSignupName(e.target.value)}
                         required
                         data-testid="input-signup-name"
+                        className="h-11"
                       />
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="signup-email">Email</Label>
+                      <Label htmlFor="signup-email" className="text-sm font-medium">Email</Label>
                       <Input
                         id="signup-email"
                         type="email"
@@ -170,10 +181,11 @@ export default function AuthPage() {
                         onChange={(e) => setSignupEmail(e.target.value)}
                         required
                         data-testid="input-signup-email"
+                        className="h-11"
                       />
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="signup-password">Password</Label>
+                      <Label htmlFor="signup-password" className="text-sm font-medium">Password</Label>
                       <Input
                         id="signup-password"
                         type="password"
@@ -182,11 +194,12 @@ export default function AuthPage() {
                         onChange={(e) => setSignupPassword(e.target.value)}
                         required
                         data-testid="input-signup-password"
+                        className="h-11"
                       />
                     </div>
                   </CardContent>
                   <CardFooter>
-                    <Button type="submit" className="w-full" data-testid="button-signup">
+                    <Button type="submit" className="w-full h-11 text-base font-semibold" data-testid="button-signup">
                       Create Account
                     </Button>
                   </CardFooter>
