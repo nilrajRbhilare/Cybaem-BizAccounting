@@ -152,7 +152,7 @@ export default function AccountantPortal() {
             <DollarSign className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">${totalRevenue.toFixed(2)}</div>
+            <div className="text-2xl font-bold">₹{totalRevenue.toFixed(2)}</div>
             <p className="text-xs text-muted-foreground mt-1">
               From {clientData.length} active clients
             </p>
@@ -258,14 +258,14 @@ export default function AccountantPortal() {
                           <Badge
                             variant={client.balance > 0 ? "destructive" : "secondary"}
                           >
-                            ${Math.abs(client.balance).toFixed(2)}
+                            ₹{Math.abs(client.balance).toFixed(2)}
                           </Badge>
                         </TableCell>
                         <TableCell className="text-right">
                           {client.invoiceCount}
                         </TableCell>
                         <TableCell className="text-right font-medium">
-                          ${client.revenue.toFixed(2)}
+                          ₹{client.revenue.toFixed(2)}
                         </TableCell>
                         <TableCell className="text-sm text-muted-foreground">
                           {client.lastInvoice}
@@ -299,7 +299,7 @@ export default function AccountantPortal() {
                                 client.balance > 0 ? "destructive" : "secondary"
                               }
                             >
-                              Balance: ${Math.abs(client.balance).toFixed(2)}
+                              Balance: ₹{Math.abs(client.balance).toFixed(2)}
                             </Badge>
                             <Badge variant="outline">
                               {client.invoiceCount} invoices
@@ -309,7 +309,7 @@ export default function AccountantPortal() {
                             <p className="text-muted-foreground">
                               Revenue:{" "}
                               <span className="font-medium text-foreground">
-                                ${client.revenue.toFixed(2)}
+                                ₹{client.revenue.toFixed(2)}
                               </span>
                             </p>
                             <p className="text-muted-foreground">
@@ -335,62 +335,99 @@ export default function AccountantPortal() {
 
         <TabsContent value="reports" className="space-y-6 mt-6">
           <div className="grid gap-6 md:grid-cols-2">
-            <Card>
+            <Card className="hover-elevate transition-smooth">
               <CardHeader>
-                <CardTitle className="text-lg">Revenue vs Expenses</CardTitle>
+                <CardTitle className="text-lg flex items-center gap-2">
+                  <BarChart3 className="h-5 w-5 text-chart-1" />
+                  Revenue vs Expenses
+                </CardTitle>
                 <CardDescription>Last 6 months comparison</CardDescription>
               </CardHeader>
               <CardContent>
-                <ResponsiveContainer width="100%" height={300}>
-                  <BarChart data={monthlyRevenue}>
-                    <CartesianGrid strokeDasharray="3 3" className="stroke-muted" />
-                    <XAxis dataKey="month" className="text-xs" />
-                    <YAxis className="text-xs" />
+                <ResponsiveContainer width="100%" height={320}>
+                  <BarChart data={monthlyRevenue} margin={{ top: 10, right: 10, left: -10, bottom: 0 }}>
+                    <defs>
+                      <linearGradient id="revenueGradient" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="5%" stopColor="hsl(var(--chart-1))" stopOpacity={0.9}/>
+                        <stop offset="95%" stopColor="hsl(var(--chart-1))" stopOpacity={0.6}/>
+                      </linearGradient>
+                      <linearGradient id="expenseGradient" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="5%" stopColor="hsl(var(--chart-2))" stopOpacity={0.9}/>
+                        <stop offset="95%" stopColor="hsl(var(--chart-2))" stopOpacity={0.6}/>
+                      </linearGradient>
+                    </defs>
+                    <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" opacity={0.3} />
+                    <XAxis 
+                      dataKey="month" 
+                      tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 12 }}
+                      stroke="hsl(var(--border))"
+                      tickLine={false}
+                    />
+                    <YAxis 
+                      tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 12 }}
+                      stroke="hsl(var(--border))"
+                      tickLine={false}
+                      tickFormatter={(value) => `₹${value}`}
+                    />
                     <Tooltip
                       contentStyle={{
                         backgroundColor: "hsl(var(--card))",
                         border: "1px solid hsl(var(--border))",
                         borderRadius: "0.5rem",
                       }}
+                      formatter={(value: any) => `₹${value.toFixed(2)}`}
+                      cursor={{ fill: "hsl(var(--muted))", opacity: 0.3 }}
                     />
-                    <Legend />
+                    <Legend 
+                      iconType="circle"
+                      formatter={(value) => value.charAt(0).toUpperCase() + value.slice(1)}
+                    />
                     <Bar
                       dataKey="revenue"
-                      fill="hsl(var(--chart-1))"
-                      radius={[4, 4, 0, 0]}
+                      fill="url(#revenueGradient)"
+                      radius={[6, 6, 0, 0]}
+                      animationDuration={1000}
                     />
                     <Bar
                       dataKey="expenses"
-                      fill="hsl(var(--chart-2))"
-                      radius={[4, 4, 0, 0]}
+                      fill="url(#expenseGradient)"
+                      radius={[6, 6, 0, 0]}
+                      animationDuration={1000}
                     />
                   </BarChart>
                 </ResponsiveContainer>
               </CardContent>
             </Card>
 
-            <Card>
+            <Card className="hover-elevate transition-smooth">
               <CardHeader>
-                <CardTitle className="text-lg">Top 5 Clients by Revenue</CardTitle>
+                <CardTitle className="text-lg flex items-center gap-2">
+                  <Users className="h-5 w-5 text-chart-2" />
+                  Top 5 Clients by Revenue
+                </CardTitle>
                 <CardDescription>Revenue distribution</CardDescription>
               </CardHeader>
               <CardContent>
-                <ResponsiveContainer width="100%" height={300}>
+                <ResponsiveContainer width="100%" height={320}>
                   <PieChart>
                     <Pie
                       data={revenueByClient}
                       cx="50%"
-                      cy="50%"
+                      cy="45%"
                       labelLine={false}
                       label={({name, percent}) => `${name} ${(percent * 100).toFixed(0)}%`}
-                      outerRadius={80}
+                      outerRadius={90}
+                      innerRadius={55}
                       fill="hsl(var(--primary))"
                       dataKey="revenue"
+                      animationDuration={800}
                     >
                       {revenueByClient.map((entry, index) => (
                         <Cell
                           key={`cell-${index}`}
                           fill={COLORS[index % COLORS.length]}
+                          stroke="hsl(var(--background))"
+                          strokeWidth={2}
                         />
                       ))}
                     </Pie>
@@ -400,6 +437,12 @@ export default function AccountantPortal() {
                         border: "1px solid hsl(var(--border))",
                         borderRadius: "0.5rem",
                       }}
+                      formatter={(value: any) => `₹${value.toFixed(2)}`}
+                    />
+                    <Legend 
+                      verticalAlign="bottom" 
+                      height={36}
+                      iconType="circle"
                     />
                   </PieChart>
                 </ResponsiveContainer>
@@ -443,10 +486,10 @@ export default function AccountantPortal() {
                             {client.invoiceCount}
                           </TableCell>
                           <TableCell className="text-right font-medium">
-                            ${client.revenue.toFixed(2)}
+                            ₹{client.revenue.toFixed(2)}
                           </TableCell>
                           <TableCell className="text-right">
-                            ${avgInvoice.toFixed(2)}
+                            ₹{avgInvoice.toFixed(2)}
                           </TableCell>
                           <TableCell className="text-right">
                             <div

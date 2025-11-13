@@ -58,8 +58,10 @@ export default function Dashboard() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-semibold mb-1">Dashboard</h1>
+      <div className="animate-fadeInDown">
+        <h1 className="text-3xl font-bold mb-1 bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">
+          Dashboard
+        </h1>
         <p className="text-muted-foreground">Overview of your business performance</p>
       </div>
 
@@ -68,24 +70,44 @@ export default function Dashboard() {
           title="Total Sales"
           value={`₹${metrics.totalSales.toLocaleString()}`}
           icon={DollarSign}
+          iconColor="text-success"
+          trend={{
+            value: "12.5%",
+            isPositive: true
+          }}
           className="stagger-delay-1"
         />
         <MetricCard
           title="Total Expenses"
           value={`₹${metrics.totalExpenses.toLocaleString()}`}
           icon={TrendingDown}
+          iconColor="text-destructive"
+          trend={{
+            value: "3.2%",
+            isPositive: false
+          }}
           className="stagger-delay-2"
         />
         <MetricCard
           title="Stock Value"
           value={`₹${metrics.stockValue.toLocaleString()}`}
           icon={Package}
+          iconColor="text-chart-2"
+          trend={{
+            value: "8.1%",
+            isPositive: true
+          }}
           className="stagger-delay-3"
         />
         <MetricCard
           title="Cash Flow"
           value={`₹${metrics.cashFlow.toLocaleString()}`}
           icon={Wallet}
+          iconColor={metrics.cashFlow >= 0 ? "text-success" : "text-destructive"}
+          trend={{
+            value: "15.3%",
+            isPositive: metrics.cashFlow >= 0
+          }}
           className="stagger-delay-4"
         />
       </div>
