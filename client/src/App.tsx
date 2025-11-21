@@ -18,6 +18,7 @@ import CompanySetup from "@/pages/company-setup";
 import Dashboard from "@/pages/dashboard";
 import Invoices from "@/pages/invoices";
 import Customers from "@/pages/customers";
+import Parties from "@/pages/parties";
 import Inventory from "@/pages/inventory";
 import PurchaseOrders from "@/pages/purchase-orders";
 import BankReconciliation from "@/pages/bank-reconciliation";
@@ -49,6 +50,7 @@ function Router() {
       <Route path="/mobile-invoice" component={MobileInvoiceFlow} />
       <Route path="/accountant-portal" component={AccountantPortal} />
       <Route path="/customers" component={Customers} />
+      <Route path="/parties" component={Parties} />
       <Route path="/inventory" component={Inventory} />
       <Route path="/purchase-orders" component={PurchaseOrders} />
       <Route path="/bank-reconciliation" component={BankReconciliation} />

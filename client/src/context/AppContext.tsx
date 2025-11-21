@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from "react";
 import {
   Customer,
+  Party,
   Product,
   Invoice,
   PurchaseOrder,
@@ -8,6 +9,7 @@ import {
   BookEntry,
   AppSettings,
   customerStorage,
+  partyStorage,
   productStorage,
   invoiceStorage,
   purchaseOrderStorage,
@@ -21,41 +23,48 @@ import {
 interface AppContextType {
   // Data
   customers: Customer[];
+  parties: Party[];
   products: Product[];
   invoices: Invoice[];
   purchaseOrders: PurchaseOrder[];
   bankTransactions: BankTransaction[];
   bookEntries: BookEntry[];
   settings: AppSettings;
-  
+
   // Customer operations
   addCustomer: (customer: Omit<Customer, "id" | "totalInvoices" | "totalAmount">) => Customer;
   updateCustomer: (id: string, updates: Partial<Customer>) => Customer | null;
   deleteCustomer: (id: string) => boolean;
-  
+
+  // Party operations
+  addParty: (party: Omit<Party, "id">) => Party;
+  updateParty: (id: string, updates: Partial<Party>) => Party | null;
+  deleteParty: (id: string) => boolean;
+  getPartyById: (id: string) => Party | null;
+
   // Product operations
   addProduct: (product: Omit<Product, "id">) => Product;
   updateProduct: (id: string, updates: Partial<Product>) => Product | null;
   deleteProduct: (id: string) => boolean;
   getLowStockProducts: () => Product[];
-  
+
   // Invoice operations
   addInvoice: (invoice: Omit<Invoice, "id" | "invoiceNumber">) => Invoice;
   updateInvoice: (id: string, updates: Partial<Invoice>) => Invoice | null;
   deleteInvoice: (id: string) => boolean;
-  
+
   // Purchase order operations
   addPurchaseOrder: (po: Omit<PurchaseOrder, "id" | "poNumber">) => PurchaseOrder;
   updatePurchaseOrder: (id: string, updates: Partial<PurchaseOrder>) => PurchaseOrder | null;
   deletePurchaseOrder: (id: string) => boolean;
   receiveStock: (id: string) => PurchaseOrder | null;
-  
+
   // Bank reconciliation
   matchBankEntry: (bankId: string, bookId: string) => boolean;
-  
+
   // Settings
   updateSettings: (settings: Partial<AppSettings>) => void;
-  
+
   // Utility
   refreshData: () => void;
   getCustomerById: (id: string) => Customer | null;
@@ -66,6 +75,7 @@ const AppContext = createContext<AppContextType | undefined>(undefined);
 
 export function AppProvider({ children }: { children: ReactNode }) {
   const [customers, setCustomers] = useState<Customer[]>([]);
+  const [parties, setParties] = useState<Party[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
   const [invoices, setInvoices] = useState<Invoice[]>([]);
   const [purchaseOrders, setPurchaseOrders] = useState<PurchaseOrder[]>([]);
@@ -81,6 +91,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
 
   const loadData = () => {
     setCustomers(customerStorage.getAll());
+    setParties(partyStorage.getAll());
     setProducts(productStorage.getAll());
     setInvoices(invoiceStorage.getAll());
     setPurchaseOrders(purchaseOrderStorage.getAll());
@@ -118,6 +129,33 @@ export function AppProvider({ children }: { children: ReactNode }) {
 
   const getCustomerById = (id: string) => {
     return customers.find((c) => c.id === id) || null;
+  };
+
+  // Party operations
+  const addParty = (party: Omit<Party, "id">) => {
+    const newParty = partyStorage.add(party);
+    setParties([...parties, newParty]);
+    return newParty;
+  };
+
+  const updateParty = (id: string, updates: Partial<Party>) => {
+    const updated = partyStorage.update(id, updates);
+    if (updated) {
+      setParties(parties.map((p) => (p.id === id ? updated : p)));
+    }
+    return updated;
+  };
+
+  const deleteParty = (id: string) => {
+    const success = partyStorage.delete(id);
+    if (success) {
+      setParties(parties.filter((p) => p.id !== id));
+    }
+    return success;
+  };
+
+  const getPartyById = (id: string) => {
+    return parties.find((p) => p.id === id) || null;
   };
 
   // Product operations
@@ -229,6 +267,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
 
   const value: AppContextType = {
     customers,
+    parties,
     products,
     invoices,
     purchaseOrders,
@@ -238,6 +277,10 @@ export function AppProvider({ children }: { children: ReactNode }) {
     addCustomer,
     updateCustomer,
     deleteCustomer,
+    addParty,
+    updateParty,
+    deleteParty,
+    getPartyById,
     addProduct,
     updateProduct,
     deleteProduct,
@@ -270,9 +313,9 @@ export function useAppContext() {
 // Hook for calculating invoice totals based on current settings
 export function useInvoiceCalculation() {
   const { settings } = useAppContext();
-  
+
   return {
-    calculateTotals: (items: InvoiceItem[]) => 
+    calculateTotals: (items: InvoiceItem[]) =>
       calculateInvoiceTotal(items, settings.taxRate),
     taxRate: settings.taxRate,
   };

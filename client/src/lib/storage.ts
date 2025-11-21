@@ -11,6 +11,24 @@ export interface Customer {
   totalAmount: number;
 }
 
+export interface Party {
+  id: string;
+  partyName: string;
+  mobileNumber: string;
+  email: string;
+  openingBalance: number;
+  balanceType: "To Collect" | "To Pay";
+  gstin?: string;
+  panNumber?: string;
+  partyType: "Customer" | "Vendor" | "Both";
+  partyCategory?: string;
+  billingAddress?: string;
+  shippingAddress?: string;
+  sameAsBilling: boolean;
+  creditPeriod?: number; // in days
+  creditLimit?: number; // in rupees
+}
+
 export interface Product {
   id: string;
   sku: string;
@@ -124,6 +142,7 @@ const defaultSettings: AppSettings = {
 // Storage keys
 const KEYS = {
   CUSTOMERS: "biz_customers",
+  PARTIES: "biz_parties",
   PRODUCTS: "biz_products",
   INVOICES: "biz_invoices",
   PURCHASE_ORDERS: "biz_purchase_orders",
@@ -190,6 +209,41 @@ export const customerStorage = {
   },
 };
 
+// Party operations
+export const partyStorage = {
+  getAll: (): Party[] => getFromStorage(KEYS.PARTIES, []),
+  save: (parties: Party[]) => saveToStorage(KEYS.PARTIES, parties),
+  add: (party: Omit<Party, "id">): Party => {
+    const parties = partyStorage.getAll();
+    const newParty: Party = {
+      ...party,
+      id: `PARTY-${Date.now()}`,
+    };
+    parties.push(newParty);
+    partyStorage.save(parties);
+    return newParty;
+  },
+  update: (id: string, updates: Partial<Party>): Party | null => {
+    const parties = partyStorage.getAll();
+    const index = parties.findIndex((p) => p.id === id);
+    if (index === -1) return null;
+    parties[index] = { ...parties[index], ...updates };
+    partyStorage.save(parties);
+    return parties[index];
+  },
+  delete: (id: string): boolean => {
+    const parties = partyStorage.getAll();
+    const filtered = parties.filter((p) => p.id !== id);
+    if (filtered.length === parties.length) return false;
+    partyStorage.save(filtered);
+    return true;
+  },
+  getById: (id: string): Party | null => {
+    const parties = partyStorage.getAll();
+    return parties.find((p) => p.id === id) || null;
+  },
+};
+
 // Product operations
 export const productStorage = {
   getAll: (): Product[] => getFromStorage(KEYS.PRODUCTS, []),
@@ -252,7 +306,7 @@ export const invoiceStorage = {
     };
     invoices.push(newInvoice);
     invoiceStorage.save(invoices);
-    
+
     // Update customer total
     const customer = customerStorage.getById(invoice.customerId);
     if (customer) {
@@ -261,12 +315,12 @@ export const invoiceStorage = {
         totalAmount: customer.totalAmount + invoice.total,
       });
     }
-    
+
     // Update product stock
     invoice.items.forEach((item) => {
       productStorage.updateStock(item.productId, -item.quantity);
     });
-    
+
     return newInvoice;
   },
   update: (id: string, updates: Partial<Invoice>): Invoice | null => {
@@ -317,13 +371,20 @@ export const purchaseOrderStorage = {
   receiveStock: (id: string): PurchaseOrder | null => {
     const po = purchaseOrderStorage.getAll().find((p) => p.id === id);
     if (!po) return null;
-    
+
     // Update product stock
     po.items.forEach((item) => {
       productStorage.updateStock(item.productId, item.quantity);
     });
-    
+
     return purchaseOrderStorage.update(id, { status: "received" });
+  },
+  delete: (id: string): boolean => {
+    const pos = purchaseOrderStorage.getAll();
+    const filtered = pos.filter((p) => p.id !== id);
+    if (filtered.length === pos.length) return false;
+    purchaseOrderStorage.save(filtered);
+    return true;
   },
 };
 
@@ -336,17 +397,17 @@ export const bankStorage = {
   matchTransaction: (bankId: string, bookId: string): boolean => {
     const txns = bankStorage.getTransactions();
     const entries = bankStorage.getEntries();
-    
+
     const txnIndex = txns.findIndex((t) => t.id === bankId);
     const entryIndex = entries.findIndex((e) => e.id === bookId);
-    
+
     if (txnIndex === -1 || entryIndex === -1) return false;
-    
+
     txns[txnIndex].matched = true;
     txns[txnIndex].matchedWith = bookId;
     entries[entryIndex].matched = true;
     entries[entryIndex].matchedWith = bankId;
-    
+
     bankStorage.saveTransactions(txns);
     bankStorage.saveEntries(entries);
     return true;
@@ -406,6 +467,44 @@ export function initializeSampleData() {
       },
     ];
     sampleCustomers.forEach((c) => customerStorage.add(c));
+  }
+
+  if (partyStorage.getAll().length === 0) {
+    const sampleParties: Omit<Party, "id">[] = [
+      {
+        partyName: "ABC Enterprises",
+        mobileNumber: "+91 98765 00001",
+        email: "contact@abcenterprises.com",
+        openingBalance: 50000,
+        balanceType: "To Collect",
+        gstin: "29ABCDE1234F1Z5",
+        panNumber: "ABCDE1234F",
+        partyType: "Customer",
+        partyCategory: "Retail",
+        billingAddress: "123 Business Park, Phase 1, Bangalore - 560001",
+        shippingAddress: "123 Business Park, Phase 1, Bangalore - 560001",
+        sameAsBilling: true,
+        creditPeriod: 30,
+        creditLimit: 100000,
+      },
+      {
+        partyName: "XYZ Suppliers",
+        mobileNumber: "+91 98765 00002",
+        email: "sales@xyzsuppliers.com",
+        openingBalance: 25000,
+        balanceType: "To Pay",
+        gstin: "27FGHIJ5678K2Y4",
+        panNumber: "FGHIJ5678K",
+        partyType: "Vendor",
+        partyCategory: "Wholesale",
+        billingAddress: "456 Industrial Area, Mumbai - 400001",
+        shippingAddress: "789 Warehouse Complex, Mumbai - 400002",
+        sameAsBilling: false,
+        creditPeriod: 15,
+        creditLimit: 200000,
+      },
+    ];
+    sampleParties.forEach((p) => partyStorage.add(p));
   }
 
   if (productStorage.getAll().length === 0) {

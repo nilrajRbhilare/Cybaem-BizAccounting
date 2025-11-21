@@ -1,11 +1,12 @@
-import { 
-  LayoutDashboard, 
-  FileText, 
-  Users, 
-  Package, 
-  ShoppingCart, 
-  CreditCard, 
-  BarChart3, 
+import {
+  LayoutDashboard,
+  FileText,
+  Users,
+  Users2,
+  Package,
+  ShoppingCart,
+  CreditCard,
+  BarChart3,
   Settings,
   Smartphone,
   BriefcaseBusiness
@@ -50,6 +51,11 @@ const menuItems = [
     title: "Customers",
     url: "/customers",
     icon: Users,
+  },
+  {
+    title: "Parties",
+    url: "/parties",
+    icon: Users2,
   },
   {
     title: "Inventory",
